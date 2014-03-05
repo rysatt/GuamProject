@@ -1,0 +1,21 @@
+# Reset AMPL
+reset;
+reset;
+
+# Load model and data files
+model Project1.mod
+data Project1.dat
+
+# Set solver options
+#option solver SNOPT;
+option solver cplex;
+
+# Solve model
+solve;
+
+# Display results
+display Installed;
+display Installed > results.txt;
+#display Build;
+display Dispatch;
+display Dispatch > results.txt;
