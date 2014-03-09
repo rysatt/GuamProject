@@ -1,6 +1,7 @@
 # Reset AMPL
 reset;
 reset;
+reset;
 
 # Load model and data files
 model Project1.mod
