@@ -3,7 +3,7 @@
 
 # Parameters to set up sets
 param time_o >= 0, default 1;
-param time_f >= 0, default 365; #Hour is now Month, 1.. 12 instead of 0..8760
+param time_f >= 0, default 730; #Hour is now Day 1..365 instead of 0..8760
 param year_o >= 0, default 2015;
 param year_f >= 0, default 2016;
 
@@ -47,10 +47,12 @@ param MaxCapacity {r in RENEWABLES};
 var Installed {s in SITES, t in TIME} >= 0;
 
 # Indicates whether that resource has been developed [binary]
-#var Build {s in SITES}, binary;
+var Build {s in SITES, t in TIME}, binary;
 
 # Amount of each resource that is actually dispatched [MWh]
 var Dispatch {s in SITES, t in TIME} >= 0;
+
+var TransBuilt{s in SITES, t in TIME} >= 0, default 0;
 
 
 # -----------------------------DEFINED VARIABLES--------------------------------
@@ -76,7 +78,7 @@ minimize TotalCosts: sum{s in SITES, t in TIME}
 # Must have developed enough renewbles in each year to meet the RPS target for that year
 subject to Meeting_RPS_Goal {y in YEARS}: 
         sum{r in RENEWABLES, t in TIME} Dispatch[r,t] 
-        >= RPS_Goal[t] / 100 *  sum{s in SITES, t in TIME} Dispatch[s,t];
+        >= RPS_Goal[y] / 100 *  sum{s in SITES, t in TIME} Dispatch[s,t];
 
 # Cannot dispatch more than has been developed
 subject to DispatchLimit {s in SITES, t in TIME}: 
@@ -93,3 +95,13 @@ subject to Meeting_Load {t in TIME}:
 		sum{s in SITES}Dispatch[s,t] = Load[t];
 
 subject to CapacityConstraint {r in RENEWABLES, t in TIME}: CumulativeInstalled[r,t] <= MaxCapacity[r];
+
+# Build constraint
+#subject to BuildOnlyOnce {s in SITES, t in TIME}: 
+#        if sum {u in 1 .. t - 1} Build[s,u] >= 1
+#        then Build[s,t] <= 0;
+
+subject to BuildOnlyOnce {s in SITES, t in TIME}:
+        if sum {u in 1 .. t-1} Installed[s,u] <= 0.0000001
+        then if Installed[s,t] > 0.0000001
+        then TransBuilt[s,t] = TransCost[s];

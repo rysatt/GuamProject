@@ -8,8 +8,8 @@ model Project1.mod
 data Project1.dat
 
 # Set solver options
-#option solver SNOPT;
-option solver cplex;
+option solver SNOPT;
+#option solver cplex;
 
 # Solve model
 solve;
