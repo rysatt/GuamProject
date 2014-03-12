@@ -3,12 +3,12 @@
 
 # Parameters to set up sets
 param time_o >= 0, default 1;
-param time_f >= 0, default 730; #Hour is now Day 1..365 instead of 0..8760
+#param time_f >= 0, default 730; #Hour is now Month, 1.. 12 instead of 0..8760
 param year_o >= 0, default 2015;
 param year_f >= 0, default 2016;
 
 # ------------------------------------SETS--------------------------------------
-set TIME = time_o .. time_f;
+set TIME;# = time_o .. time_f;
 set YEARS = year_o .. year_f;
 set SITES;
 set RENEWABLES within SITES;
@@ -47,12 +47,10 @@ param MaxCapacity {r in RENEWABLES};
 var Installed {s in SITES, t in TIME} >= 0;
 
 # Indicates whether that resource has been developed [binary]
-var Build {s in SITES, t in TIME}, binary;
+#var Build {s in SITES}, binary;
 
 # Amount of each resource that is actually dispatched [MWh]
 var Dispatch {s in SITES, t in TIME} >= 0;
-
-var TransBuilt{s in SITES, t in TIME} >= 0, default 0;
 
 
 # -----------------------------DEFINED VARIABLES--------------------------------
@@ -66,11 +64,16 @@ var CapacityFactor {s in SITES, t in TIME} =
         then 0
         else Dispatch[s,t] / (CumulativeInstalled[s,t] * 24); # 365/12*24 for monthly, *24 for daily
 
+var TransInstallCost {s in SITES} =
+		if sum{t in TIME}Installed[s,t] > 0.01 # Error factor for marginally positive amounts
+		then TransCost[s]
+		else 0;
+
 # -----------------------------OBJECTIVE FUNCTION-------------------------------
 # Minimize total costs, including capital and operating costs [$]
-minimize TotalCosts: sum{s in SITES, t in TIME} 
-        #(TransCost[s] * Build[s]
-        (CapitalCost[s] * Installed[s,t]
+minimize TotalCosts: sum{s in SITES} 
+        (TransInstallCost[s]) + 
+        sum{s in SITES, t in TIME} (CapitalCost[s] * Installed[s,t]
         + FixedOMCost[s] * CumulativeInstalled[s,t]
         + VarOMCost[s] * Dispatch[s,t]);
 
@@ -83,7 +86,7 @@ subject to Meeting_RPS_Goal {y in YEARS}:
 # Cannot dispatch more than has been developed
 subject to DispatchLimit {s in SITES, t in TIME}: 
         #Dispatch[s,t] <= CumulativeInstalled[s,t];
-        Dispatch[s,t] <= CumulativeInstalled[s,t] * 24; # 365/12*24 for monthly, *24 for daily
+        Dispatch[s,t] <= CumulativeInstalled[s,t]*24; # 365/12*24 for monthly, *24 for daily
         
 
 # Cannot dispatch what is not available
@@ -96,12 +99,5 @@ subject to Meeting_Load {t in TIME}:
 
 subject to CapacityConstraint {r in RENEWABLES, t in TIME}: CumulativeInstalled[r,t] <= MaxCapacity[r];
 
-# Build constraint
-#subject to BuildOnlyOnce {s in SITES, t in TIME}: 
-#        if sum {u in 1 .. t - 1} Build[s,u] >= 1
-#        then Build[s,t] <= 0;
-
-subject to BuildOnlyOnce {s in SITES, t in TIME}:
-        if sum {u in 1 .. t-1} Installed[s,u] <= 0.0000001
-        then if Installed[s,t] > 0.0000001
-        then TransBuilt[s,t] = TransCost[s];
+#subject to TransmissionLimit {s in SITES}:
+		

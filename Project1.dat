@@ -17,6 +17,8 @@ Diesel_1 0   		469035		9657	     203	   287.2
 param RPS_Goal :=
 2015 0
 2016 5
+#2017 5
+#2018 5
 ;       
 
 # Max Capacity of each renewable site [MW]
