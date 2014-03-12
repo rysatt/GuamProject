@@ -3,12 +3,12 @@
 
 # Parameters to set up sets
 param time_o >= 0, default 1;
-param time_f >= 0, default 365; #Hour is now Month, 1.. 12 instead of 0..8760
+param time_f >= 0, default 730; #Hour is now Month, 1.. 12 instead of 0..8760
 param year_o >= 0, default 2015;
 param year_f >= 0, default 2016;
 
 # ------------------------------------SETS--------------------------------------
-set TIME = time_o .. time_f;
+set TIME;# = time_o .. time_f;
 set YEARS = year_o .. year_f;
 set SITES;
 set RENEWABLES within SITES;
@@ -76,12 +76,12 @@ minimize TotalCosts: sum{s in SITES, t in TIME}
 # Must have developed enough renewbles in each year to meet the RPS target for that year
 subject to Meeting_RPS_Goal {y in YEARS}: 
         sum{r in RENEWABLES, t in TIME} Dispatch[r,t] 
-        >= RPS_Goal[t] / 100 *  sum{s in SITES, t in TIME} Dispatch[s,t];
+        >= RPS_Goal[y] / 100 *  sum{s in SITES, t in TIME} Dispatch[s,t];
 
 # Cannot dispatch more than has been developed
 subject to DispatchLimit {s in SITES, t in TIME}: 
         #Dispatch[s,t] <= CumulativeInstalled[s,t];
-        Dispatch[s,t] <= CumulativeInstalled[s,t] * 24; # 365/12*24 for monthly, *24 for daily
+        Dispatch[s,t] <= CumulativeInstalled[s,t]*24; # 365/12*24 for monthly, *24 for daily
         
 
 # Cannot dispatch what is not available
