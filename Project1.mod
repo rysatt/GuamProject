@@ -41,6 +41,12 @@ param InitialDevelopedResource {s in SITES};
 # Max Capacity of each renewable site [MW]
 param MaxCapacity {r in RENEWABLES};
 
+# Slope of increasing variable costs due to forecasted fuel cost increases
+param m {s in SITES};
+
+# Intercept of increasing variable costs due to forecasted fuel cost increases
+param b {s in SITES};
+
 # -----------------------------DECISION VARIABLES-------------------------------
 
 # Amount of resource installed in the given time period [MW]
@@ -62,7 +68,7 @@ var CumulativeInstalled {s in SITES, t in TIME} =
 var CapacityFactor {s in SITES, t in TIME} = 
         if CumulativeInstalled[s,t] = 0
         then 0
-        else Dispatch[s,t] / (CumulativeInstalled[s,t] * 24); # 365/12*24 for monthly, *24 for daily
+        else Dispatch[s,t] / (CumulativeInstalled[s,t] * 168); # 365/12*24 for monthly, *24 for daily
 
 var TransInstallCost {s in SITES} =
 		if sum{t in TIME}Installed[s,t] > 0.01 # Error factor for marginally positive amounts
@@ -75,18 +81,18 @@ minimize TotalCosts: sum{s in SITES}
         (TransInstallCost[s]) + 
         sum{s in SITES, t in TIME} (CapitalCost[s] * Installed[s,t]
         + FixedOMCost[s] * CumulativeInstalled[s,t]
-        + VarOMCost[s] * Dispatch[s,t]);
+        + (m[s]*(2015+t/52) + b[s]) * Dispatch[s,t]);
 
 # ---------------------------------CONSTRAINTS----------------------------------
 # Must have developed enough renewbles in each year to meet the RPS target for that year
 subject to Meeting_RPS_Goal {y in YEARS}: 
-        sum{r in RENEWABLES, t in ((y-2015)*365+1)..((y-2014)*365)} Dispatch[r,t] 
-        >= RPS_Goal[y] / 100 *  sum{s in SITES, t in ((y-2015)*365+1)..((y-2014)*365)} Dispatch[s,t];
+        sum{r in RENEWABLES, t in ((y-2015)*52+1)..((y-2014)*52)} Dispatch[r,t] 
+        >= RPS_Goal[y] / 100 *  sum{s in SITES, t in ((y-2015)*52+1)..((y-2014)*52)} Dispatch[s,t];
 
 # Cannot dispatch more than has been developed
 subject to DispatchLimit {s in SITES, t in TIME}: 
         #Dispatch[s,t] <= CumulativeInstalled[s,t];
-        Dispatch[s,t] <= CumulativeInstalled[s,t]*24; # 365/12*24 for monthly, *24 for daily
+        Dispatch[s,t] <= CumulativeInstalled[s,t]*168; # 365/12*24 for monthly, *24 for daily
         
 
 # Cannot dispatch what is not available

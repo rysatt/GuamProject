@@ -7,7 +7,7 @@ reset;
 model Project1.mod
 data Project1.dat
 
-table Energy IN "ODBC" "ENERGY_24hr_20yr.xlsx":
+table Energy IN "ODBC" "ENERGY_168hr_21yr.xlsx":
         TIME <- [t ~ TIME], 
         	Load, 
         	ResourceAvailability["Solar_1",t] ~ Solar, 

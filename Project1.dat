@@ -6,11 +6,11 @@ set SITES := Diesel_1 Oil_1 Wind_1 Solar_1;
 set RENEWABLES := Wind_1 Solar_1;
 
 # ---------------------------------PARAMETERS-----------------------------------
-param:	 TransCost 	CapitalCost	FixedOMCost  VarOMCost InitialDevelopedResource :=
-Solar_1	 590361	  	5124355		24690	     0	       0.109
-Wind_1	 122504	  	2711020		39550	     0	       0
-Oil_1	 0   		1655419		15175	     133	   446
-Diesel_1 0   		469035		9657	     203	   287.2
+param:	 TransCost 	CapitalCost	FixedOMCost  InitialDevelopedResource :=
+Solar_1	 590361	  	5124355		31771	     0.109
+Wind_1	 122504	  	2533664		45281	     0
+Oil_1	 0   		165541		15175	     446
+Diesel_1 0   		469035		9657	     287.2
 ;
 
 # RPS goal as a % of annual sales       
@@ -41,7 +41,14 @@ param RPS_Goal :=
 # Max Capacity of each renewable site [MW]
 param MaxCapacity :=
 Solar_1 473
-Wind_1  20
+Wind_1  50
+;
+
+param: m b :=
+Solar_1  0 		0
+Wind_1 	 0 		0
+Oil_1	 5.9083 -11775
+Diesel_1 15.165 -30213
 ;
 
 # Hourly Load [MWh]             
