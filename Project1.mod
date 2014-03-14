@@ -47,6 +47,9 @@ param m {s in SITES};
 # Intercept of increasing variable costs due to forecasted fuel cost increases
 param b {s in SITES};
 
+# Spending limit for capital investment in a given year Y
+param AnnualBudget;
+
 # -----------------------------DECISION VARIABLES-------------------------------
 
 # Amount of resource installed in the given time period [MW]
@@ -70,16 +73,18 @@ var CapacityFactor {s in SITES, t in TIME} =
         then 0
         else Dispatch[s,t] / (CumulativeInstalled[s,t] * 168); # 365/12*24 for monthly, *24 for daily
 
-var TransInstallCost {s in SITES} =
-		if sum{t in TIME}Installed[s,t] > 0.01 # Error factor for marginally positive amounts
-		then TransCost[s]
+var TransInstallCost {s in SITES, t in TIME} =
+		if sum{u in time_o .. (if t = time_o then time_o else t-1)} # If at first time step, ensure it is still possible to build
+			Installed[s,u] <= 0.01 # Check for installations from beginning of time until previous time step
+		then if Installed[s,t] > 0.01 # Error factor for marginally positive amounts
+				then TransCost[s]
+			 	else 0
 		else 0;
 
 # -----------------------------OBJECTIVE FUNCTION-------------------------------
 # Minimize total costs, including capital and operating costs [$]
-minimize TotalCosts: sum{s in SITES} 
-        (TransInstallCost[s]) + 
-        sum{s in SITES, t in TIME} (CapitalCost[s] * Installed[s,t]
+minimize TotalCosts: #sum{s in SITES} 
+        sum{s in SITES, t in TIME} (TransInstallCost[s,t] + CapitalCost[s] * Installed[s,t]
         + FixedOMCost[s] * CumulativeInstalled[s,t]
         + (m[s]*(2015+t/52) + b[s]) * Dispatch[s,t]);
 
@@ -96,14 +101,20 @@ subject to DispatchLimit {s in SITES, t in TIME}:
         
 
 # Cannot dispatch what is not available
-subject to AvaiabilityLimit {r in RENEWABLES, t in TIME}:
+subject to AvailabilityLimit {r in RENEWABLES, t in TIME}:
         Dispatch[r,t] <= ResourceAvailability[r,t] * CumulativeInstalled[r,t];
         
 # Must meet load
 subject to Meeting_Load {t in TIME}:
 		sum{s in SITES}Dispatch[s,t] = Load[t];
 
+# Cannot install more than there is physical room for
 subject to CapacityConstraint {r in RENEWABLES, t in TIME}: CumulativeInstalled[r,t] <= MaxCapacity[r];
 
-#subject to TransmissionLimit {s in SITES}:
+# Cannot 
+#subject to BudgetLimit {y in YEARS}:
+#		sum{s in SITES, t in ((y-2015)*52+1)..((y-2014)*52)} 
+#		(TransInstallCost[s,t] + CapitalCost[s] * Installed[s,t]) <= AnnualBudget;
+#        + FixedOMCost[s] * CumulativeInstalled[s,t]
+#        + (m[s]*(2015+t/52) + b[s]) * Dispatch[s,t]) <= AnnualBudget[y];
 		

@@ -2,15 +2,23 @@
 # Martin Chang and Ryan Satterlee
 
 # ------------------------------------SETS--------------------------------------
-set SITES := Diesel_1 Oil_1 Wind_1 Solar_1;
-set RENEWABLES := Wind_1 Solar_1;
+set SITES := Diesel_1 Oil_1 L450-R3 L177-4-R2 L7163 W3-Cotal W3-Pulantat W2-Navy;
+set RENEWABLES := L450-R3 L177-4-R2 L7163 W3-Cotal W3-Pulantat W2-Navy;
 
 # ---------------------------------PARAMETERS-----------------------------------
-param:	 TransCost 	CapitalCost	FixedOMCost  InitialDevelopedResource :=
-Solar_1	 590361	  	5124355		31771	     0.109
-Wind_1	 122504	  	2533664		45281	     0
-Oil_1	 0   		165541		15175	     446
-Diesel_1 0   		469035		9657	     287.2
+param:	 TransCost 		CapitalCost	FixedOMCost  InitialDevelopedResource :=
+L450-R3	 	0	  		5124355		31771	     0.109
+L177-4-R2	224198.62	5124355		31771	     0
+L7163	 	727130.67	5124355		31771	     0
+W3-Cotal	122504	  	2533664		45281	     0
+W3-Pulantat 122504	  	2533664		45281	     0
+W2-Navy		122504	  	2533664		45281	     0
+Oil_1		0   		165541		15175	     446
+Diesel_1 	0   		469035		9657	     287.2
+#Solar_1	 590361	  	5124355		31771	     0.109
+#Wind_1	 122504	  	2533664		45281	     0
+#Oil_1	 0   		165541		15175	     446
+#Diesel_1 0   		469035		9657	     287.2
 ;
 
 # RPS goal as a % of annual sales       
@@ -40,16 +48,26 @@ param RPS_Goal :=
 
 # Max Capacity of each renewable site [MW]
 param MaxCapacity :=
-Solar_1 473
-Wind_1  50
+L450-R3	 	168.75
+L177-4-R2	160.8
+L7163	 	62.4
+W3-Cotal	20
+W3-Pulantat 10
+W2-Navy		20
 ;
 
 param: m b :=
-Solar_1  0 		0
-Wind_1 	 0 		0
+L450-R3	 	0 0
+L177-4-R2	0 0
+L7163	 	0 0
+W3-Cotal	0 0
+W3-Pulantat 0 0
+W2-Navy		0 0
 Oil_1	 5.9083 -11775
 Diesel_1 15.165 -30213
 ;
+
+param AnnualBudget := 500000000;
 
 # Hourly Load [MWh]             
 # Coming from excel file read in run script

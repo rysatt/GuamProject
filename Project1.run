@@ -7,11 +7,15 @@ reset;
 model Project1.mod
 data Project1.dat
 
-table Energy IN "ODBC" "ENERGY_168hr_21yr.xlsx":
+table Energy IN "ODBC" "ENERGY_168hr_21yr_6sites_loadgrowth.xlsx":
         TIME <- [t ~ TIME], 
         	Load, 
-        	ResourceAvailability["Solar_1",t] ~ Solar, 
-        	ResourceAvailability["Wind_1",t] ~ Wind;
+        	ResourceAvailability["L450-R3",t] ~ L450_R3, 
+        	ResourceAvailability["L177-4-R2",t] ~ L177_4_R2, 
+        	ResourceAvailability["L7163",t] ~ L7163, 
+        	ResourceAvailability["W3-Cotal",t] ~ W3_Cotal, 
+        	ResourceAvailability["W3-Pulantat",t] ~ W3_Pulantat, 
+        	ResourceAvailability["W2-Navy",t] ~ W2_Navy;
 read table Energy;
 
 # Set solver options
