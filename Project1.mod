@@ -50,6 +50,9 @@ param b {s in SITES};
 # Spending limit for capital investment in a given year Y
 param AnnualBudget;
 
+# Annual Discount Rate
+param DiscountRate;
+
 # -----------------------------DECISION VARIABLES-------------------------------
 
 # Amount of resource installed in the given time period [MW]
@@ -74,7 +77,7 @@ var CapacityFactor {s in SITES, t in TIME} =
         else Dispatch[s,t] / (CumulativeInstalled[s,t] * 168); # 365/12*24 for monthly, *24 for daily
 
 var TransInstallCost {s in SITES, t in TIME} =
-		if sum{u in time_o .. (if t = time_o then time_o else t-1)} # If at first time step, ensure it is still possible to build
+		if t = time_o or sum{u in time_o .. t-1} # If at first time step, ensure it is still possible to build
 			Installed[s,u] <= 0.01 # Check for installations from beginning of time until previous time step
 		then if Installed[s,t] > 0.01 # Error factor for marginally positive amounts
 				then TransCost[s]
@@ -84,9 +87,12 @@ var TransInstallCost {s in SITES, t in TIME} =
 # -----------------------------OBJECTIVE FUNCTION-------------------------------
 # Minimize total costs, including capital and operating costs [$]
 minimize TotalCosts: #sum{s in SITES} 
-        sum{s in SITES, t in TIME} (TransInstallCost[s,t] + CapitalCost[s] * Installed[s,t]
+        sum{s in SITES, t in TIME} 
+        (TransInstallCost[s,t] 
+        + CapitalCost[s] * Installed[s,t]
         + FixedOMCost[s] * CumulativeInstalled[s,t]
-        + (m[s]*(2015+t/52) + b[s]) * Dispatch[s,t]);
+        + (m[s]*(2015+t/52) + b[s]) * Dispatch[s,t])
+        / (1 + DiscountRate / 52)^t;
 
 # ---------------------------------CONSTRAINTS----------------------------------
 # Must have developed enough renewbles in each year to meet the RPS target for that year
@@ -111,10 +117,10 @@ subject to Meeting_Load {t in TIME}:
 # Cannot install more than there is physical room for
 subject to CapacityConstraint {r in RENEWABLES, t in TIME}: CumulativeInstalled[r,t] <= MaxCapacity[r];
 
-# Cannot 
-#subject to BudgetLimit {y in YEARS}:
-#		sum{s in SITES, t in ((y-2015)*52+1)..((y-2014)*52)} 
-#		(TransInstallCost[s,t] + CapitalCost[s] * Installed[s,t]) <= AnnualBudget;
+# Cannot exceed an annual budget for capital investments
+subject to BudgetLimit {y in YEARS}:
+		sum{s in SITES, t in ((y-2015)*52+1)..((y-2014)*52)} 
+		(TransInstallCost[s,t] + CapitalCost[s] * Installed[s,t]) <= AnnualBudget/ (1 + DiscountRate)^(y-2015);
 #        + FixedOMCost[s] * CumulativeInstalled[s,t]
 #        + (m[s]*(2015+t/52) + b[s]) * Dispatch[s,t]) <= AnnualBudget[y];
 		

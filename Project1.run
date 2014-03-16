@@ -7,7 +7,7 @@ reset;
 model Project1.mod
 data Project1.dat
 
-table Energy IN "ODBC" "ENERGY_168hr_21yr_6sites_loadgrowth.xlsx":
+table Energy IN "ODBC" "ENERGY_168hr_21yr_6sites_loadgrowth_rand.xlsx":
         TIME <- [t ~ TIME], 
         	Load, 
         	ResourceAvailability["L450-R3",t] ~ L450_R3, 

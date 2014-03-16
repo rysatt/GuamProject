@@ -67,7 +67,9 @@ Oil_1	 5.9083 -11775
 Diesel_1 15.165 -30213
 ;
 
-param AnnualBudget := 500000000;
+param AnnualBudget := 200000000;
+
+param DiscountRate := 0.07;
 
 # Hourly Load [MWh]             
 # Coming from excel file read in run script
