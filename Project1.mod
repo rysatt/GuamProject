@@ -120,7 +120,7 @@ subject to CapacityConstraint {r in RENEWABLES, t in TIME}: CumulativeInstalled[
 # Cannot exceed an annual budget for capital investments
 subject to BudgetLimit {y in YEARS}:
 		sum{s in SITES, t in ((y-2015)*52+1)..((y-2014)*52)} 
-		(TransInstallCost[s,t] + CapitalCost[s,y] * Installed[s,t]) <= AnnualBudget/ (1 + DiscountRate)^(y-2015);
+		(TransInstallCost[s,t] + CapitalCost[s,y] * Installed[s,t]) <= AnnualBudget; #/ (1 + DiscountRate)^(y-2015);
 #        + FixedOMCost[s] * CumulativeInstalled[s,t]
 #        + (m[s]*(2015+t/52) + b[s]) * Dispatch[s,t]) <= AnnualBudget[y];
 		
