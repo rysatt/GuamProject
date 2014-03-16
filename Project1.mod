@@ -18,7 +18,7 @@ set RENEWABLES within SITES;
 param TransCost {s in SITES};
 
 # Capital costs [$/MW]
-param CapitalCost {s in SITES};          
+param CapitalCost {s in SITES, y in YEARS};          
 
 # Fixed O&M [$/MW-yr]    
 param FixedOMCost {s in SITES};  
@@ -89,7 +89,7 @@ var TransInstallCost {s in SITES, t in TIME} =
 minimize TotalCosts: #sum{s in SITES} 
         sum{s in SITES, t in TIME} 
         (TransInstallCost[s,t] 
-        + CapitalCost[s] * Installed[s,t]
+        + CapitalCost[s,(2015+floor((t-1)/52))] * Installed[s,t]
         + FixedOMCost[s] * CumulativeInstalled[s,t]
         + (m[s]*(2015+t/52) + b[s]) * Dispatch[s,t])
         / (1 + DiscountRate / 52)^t;
@@ -120,7 +120,7 @@ subject to CapacityConstraint {r in RENEWABLES, t in TIME}: CumulativeInstalled[
 # Cannot exceed an annual budget for capital investments
 subject to BudgetLimit {y in YEARS}:
 		sum{s in SITES, t in ((y-2015)*52+1)..((y-2014)*52)} 
-		(TransInstallCost[s,t] + CapitalCost[s] * Installed[s,t]) <= AnnualBudget/ (1 + DiscountRate)^(y-2015);
+		(TransInstallCost[s,t] + CapitalCost[s,y] * Installed[s,t]) <= AnnualBudget; #/ (1 + DiscountRate)^(y-2015);
 #        + FixedOMCost[s] * CumulativeInstalled[s,t]
 #        + (m[s]*(2015+t/52) + b[s]) * Dispatch[s,t]) <= AnnualBudget[y];
 		
