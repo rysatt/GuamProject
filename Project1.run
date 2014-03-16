@@ -26,10 +26,10 @@ option solver SNOPT;
 solve;
 
 # Display results
-display Installed;
+#display Installed;
 display Installed > results.txt;
 #display Build;
-display Dispatch;
+#display Dispatch;
 display Dispatch > results.txt;
 display TotalCosts;
 display TotalCosts > results.txt;

@@ -9,7 +9,7 @@ set RENEWABLES := L450-R3 L177-4-R2 L7163 W3-Cotal W3-Pulantat W2-Navy;
 param:	 TransCost 		FixedOMCost  InitialDevelopedResource :=
 L450-R3	 	0	  		31771	     0.109
 L177-4-R2	224198.62	31771	     0
-L7163	 	9999727130.67	31771	     0 #added a 999 to front of trans cost to force model to not build
+L7163	 	727130.67	31771	     0 
 W3-Cotal	122504	  	57245	     0 #45281 fixed OM from EIA, 57245 is discounted from GPA IRP
 W3-Pulantat 122504	  	57245	     0
 W2-Navy		122504	  	57245	     0

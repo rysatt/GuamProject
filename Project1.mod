@@ -108,7 +108,7 @@ subject to DispatchLimit {s in SITES, t in TIME}:
 
 # Cannot dispatch what is not available
 subject to AvailabilityLimit {r in RENEWABLES, t in TIME}:
-        Dispatch[r,t] <= ResourceAvailability[r,t] * CumulativeInstalled[r,t];
+        Dispatch[r,t] <= ResourceAvailability[r,t] * CumulativeInstalled[r,t]; # Trying to force renewables to always dispatch, 3/16/2014 12:23 PM
         
 # Must meet load
 subject to Meeting_Load {t in TIME}:
