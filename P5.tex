@@ -1,0 +1,252 @@
+\documentclass[12pt,letterpaper,fleqn]{report}
+
+\usepackage[top=1in,bottom=1in,left=1in,right=1in]{geometry}
+\usepackage{multicol}
+\usepackage{graphicx}
+\usepackage{pdfpages}
+\usepackage{amsmath}
+\usepackage{verbatim}
+\usepackage[margin=10pt,font=small,labelfont=bf]{caption}
+\usepackage{empheq}
+\usepackage{hyperref}
+
+\newcommand*\widefbox[1]{\fbox{\hspace{2em}#1\hspace{2em}}}
+\newcommand{\dC}{^{o}C}
+
+\setlength{\parindent}{0in} % No indentation
+\setlength{\parskip}{0.5cm}
+\setlength{\tabcolsep}{4pt} % Tight table
+
+\setcounter{secnumdepth}{2}
+
+\providecommand{\e}[1]{\ensuremath{\times 10^{#1}}}
+\renewcommand{\thesection}{Part \Roman{section}.}
+
+\title{Guam Renewable Integration}
+%\subtitle{ENERGY 291 Final Report}
+\author{Martin Chang \and Ryan Satterlee}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+
+High electricity prices on island nations and territories result from
+a limitation of conventional energy resources, necessitating the
+expensive imports of primarily liquid fuels by sea. The potential for
+cheaper systems exists through a combination of increased deployment
+of renewable energy, energy storage, and optimal grid
+planning. Additionally, reducing reliance on imported fuels increases
+the robustness and resiliency of the grid system against fuel
+shortages and price shocks.
+
+In this report, we will investigate the optimization of grid planning
+on the island of Guam, with a focus on minimizing net present value
+costs of a system upgrade. This will involve simultaneously optimizing
+two interdependent variables: (1) the quantity of new renewable energy
+capacity to build and (2) the geolocation of these new systems, based
+on recommended locations by NREL, resource availability, and
+transmission costs.
+
+Guam is currently serviced by a single utility, the Guam Power
+Authority (GPA), which makes island wide grid changes and planning
+more feasible. GPA owns 552.8 MW of gross generation capacity, 663
+miles of T\&D lines, and 29 substations \cite{gpa14a}. On an
+annual basis, Guam consumes on the order of 2 billion kWh, generated
+by means of petroleum products, primarily residual fuel oil (RFO \#6)
+and diesel (No. 2 distillate) [1, 2]. This electricity comes at a cost
+of \$0.27/kWh as of January 2012, or about 2.5 times that of the US
+mainland. Additionally, Guam is considering exploring LNG as a
+conventional alternative, and passed a renewable portfolio standard of
+5\% by 2015 and 25\% by 2035 \cite{eia12}.
+
+Although it is well accepted that there is the potential for
+economically sound investments in new energy technologies,
+particularly solar PV, on islands that import oil for electricity,
+this project seeks to develop how this plan might be carried out and
+to determine what the limiting constraints on the problem are.
+
+\section{Methods}
+
+The model is a nonlinear cost minimization. The nonlinearity arises
+from discontinuties due to transmission costs, which are fully
+incurred for a site upon first construction at that site. Other costs
+include capital costs (a function of installed capacity), fixed
+operation \& maintenance (O\&M) costs (a function of cumulative
+installed capacity), and variable O\&M costs (a function of dispatched
+generation. 
+
+Objective Function:
+  \[\text{min} \quad  \sum_{s \in SITES}\sum_{t \in TIME}(C_{st}^T + C_s^Cx_{st}
+  + C_s^FB_{st} + C_s^VD_{st}) / (1 + d)^t\]
+  Subject to:
+
+  RPS Goal:
+  \[\forall y \in YEARS \sum_{r \in RENEWABLES}\sum_{t \in TIME} D_{rt} \ge RPS_y \times
+  \sum_{s \in SITES}\sum_{t \in TIME} D_{st}\]
+
+  Dispatch Limit:
+  \[\forall s,t \in SITES, TIME: D_{st} \le B_{st}\]
+
+  Availability:
+  \[\forall r,t \in RENEWABLES, TIME: D_{rt} \le A_{rt}B_{rt}\]
+
+  Load:
+  \[\forall t \in TIME: \sum_{s \in SITES} D_{st} = L_{t}\]
+
+  Capacity:
+  \[\forall r,t \in RENEWABLES, TIME: B_{rt} \le P_r^{max}\]
+
+  Positivity Constraints:
+  \[\forall  \ge 0\]
+  
+  where:
+
+  {\setlength{\parindent}{-1em}
+    $\quad x_{st}^{}$ is the Decision variable: instantaneous amount of resource to build [$MW$]\\
+    $\quad B_{st}^{}$ is the Defined variable: cumulative developed resource [$MW$]\\
+    $\quad C_{s}^{F}$ is the Fixed O\&M Cost + Transmission Costs [$\$/MWh$]\\
+    $\quad C_{s}^{C}$ is the Capital Cost [$\$/MW$]\\
+    $\quad C_{st}^{T}$ is the Tranmission Capital Cost [$\$/MW$]\\
+    $\quad C_{s}^{V}$ is the Variable O\&M Costs [$\$/MW$]\\
+    $\quad L_{ht}^{}$ is the Load [$MWh$]\\
+    $\quad D_{st}^{}$ is the Dispatch [$MWh$]\\
+    $\quad S_{t}^{}$ is the RPS goal [$\%$]\\
+    $\quad A_{st}^{}$ is the Resource availability [$MW/km^2$]\\
+    $\quad P_{s}^{max}$ is the Maximum site capacity [$MW$]\\
+    $\quad d$ is the Discount rate\\
+    $\quad SITES$ is the set of all generation sites (Oil, Diesel,
+    Solar, and Wind)\\
+    $\quad RENEWABLES$ is the set of all renewable generation sites
+    (Solar and Wind)\\
+    $\quad TIME$ is the set of all timesteps\\
+    $\quad YEARS$ is the est of all years (2015 - 2036)
+  }
+
+
+
+\section{Data}
+
+Our project will be broken into several stages in order to increase
+the complexity and power of the model over time as time and data
+availability permits. First, we will be optimizing the placement of
+the renewable energy generation needed to meet Guam’s RPS (5\% by 2015
+up to 25\% by 2035) given current grid constraints. This will
+primarily rely on the geospatial locations and capacities of existing
+grid infrastructure, resource maps of renewable energy sources, and
+costs associated with building and operating these plants and the
+transmission network. Additional work could involve optimizing the
+grid infrastructure with new construction, which would require
+evaluating the impact of land features (such as slope, urban areas,
+etc.) on the cost of new T\&D lines. Finally, we would require the
+demand profiles for electricity in Guam.
+
+An important source of information for these data sets may be Guam
+Power Authority (GPA), which lists many different contact addresses,
+including several specifically for T\&D. The GPA website gives access
+to a diagram of the existing transmission lines, which may be able to
+be imported into GIS, along with one-line diagrams showing the
+electrical structure of the grid. GPA’s 2008 IRP gives data on the
+relevant features of the existing generation sources (nameplate
+capacity, age, heat rates, operating costs, etc.). Additionally, the
+Guam Energy Office may have relevant information, as their interests
+lie in promoting energy conservation, energy efficiency, and renewable
+energy programs.
+
+NREL provides access to two stations of TMY3 data that can be used for
+solar and wind resource mapping, although extrapolating radiation and
+wind speed data from just two points may be a challenge. NREL also
+previously published a technical assessment report evaluating energy
+efficiency and renewables in Guam with the Department of
+Interior. This report focuses on a wide range of strategies, but does
+conclude on the high potential of wind on the Guam grid, suggesting a
+potential collaborative effort in sharing data related to grid
+optimization.
+
+A large amount of preprocessing of the data was required to
+incorporate it into the model. The 2011-2013 load data from GPA was
+averaged in order to create a model baseline year without the
+fluctuations of each individual year. This was then extrapolated from
+2015-2035 based on the load growth prediction from Guam's 2013 IRP
+\cite{gpa13a}. 
+
+Solar and wind resource data were extrapolated from the limited
+available TMY3 data and the single meteorological tower from the
+Navy. This involved combining diffuse and direct radiation to
+determine incident radation levels, which could then be converted into
+``sun-hours.'' Anenometer readings were extrapolated to hub heights
+using the power law, with a Hellman exponent, $\alpha$, of 0.2:
+\[v_2 = v_1\left(\frac{h_2}{h_1}\right)^\alpha\] 
+These wind speeds could then be used to determine outputs of a GE
+2.5MW turbine based on its power curve, approximated with a Gaussian
+curve \cite{ge}. Each wind and solar site were designated to be
+represented by either one of the three measurement sites or an average
+of two, based on its proximity. While more site-specific data would
+obviously be needed before construction at these sites, this serves as
+a rough estimate of the available resource, given data constraints.
+
+All load and resource data was then binned into appropriately sized
+timesteps. The final model involved timesteps of 168 hours (1
+week). In extrapolating resource data from 2015-2035, a uniform
+degree of randomness (5\%) was included to provide variation between
+different sites and years. 
+
+\section{Results}
+
+\section{Senstivity/Uncertainty}
+
+\section{Discussion}
+
+\begin{thebibliography}{99}
+
+\bibitem{gpa14a} 
+  Guam Power Authority.
+  \emph{Fact Sheet}.
+  Retrieved March 13, 2014 from: 
+  \url{http://guampowerauthority.com/gpa_authority/about/gpa_fact_sheet.php}.
+
+\bibitem{misty}
+  Baring-Gould, I. et al. (April 2011).
+  \emph{Guam Initial Technical Assessment Report}.
+  National Renewable Energy Laboratory (NREL).
+  Retrieved from \url{http://www.nrel.gov/docs/fy11osti/50580.pdf}
+
+\bibitem{dsire}
+  DSIRE (2012).
+  \emph{Guam Renewable Energy Portfolio Goal}.
+  Database of State Incentives for Renewable Energy.
+  
+\bibitem{gpa_trans}
+  Guam Power Authority.
+  \emph{GPA Transmission Islandwide Power System Single-Line Diagram}.
+  Retrieved from 
+  \url{http://guampowerauthority.com/gpa_authority/engineering/documents/IslandwidePlantsandTransmission.pdf}
+
+\bibitem{gpa08}
+  Guam Power Authority (2008).
+  \emph{Generation Resource Handbook, FY 2008}.
+  Retrieved from
+  \url{http://guampowerauthority.com/gpa_authority/strategicplanning/documents/FY2008GenerationResourceHandbook.pdf}
+
+\bibitem{eia12}
+  U.S. Energy Information Administration (2012).
+  \emph{Guam Territory Profile and Energy Analysis}
+  Retrieved January 24, 2014 from
+  \url{http://www.eia.gov/countries/country-data.cfm?fips=gq}
+  
+\bibitem{gpa13a}
+  Guam Power Authority (Feb 2013).
+  \emph{Integrated Resource Plan, FY 2013}.
+
+\bibitem{ge}
+  General Electric (GE).
+  \emph{2.5MW Wind Turbine Series}.
+  GE Power \& Water, Renewable Energy.
+  Retrieved March 10, 2014 from
+  \url{http://www.ge-energy.com/content/multimedia/_files/downloads/GEA17007A-Wind25Brochure.pdf}
+
+\end{thebibliography}
+
+\end{document}
