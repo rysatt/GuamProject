@@ -6,7 +6,7 @@
 \usepackage{pdfpages}
 \usepackage{amsmath}
 \usepackage{verbatim}
-\usepackage[margin=10pt,font=small,labelfont=bf]{caption}
+\usepackage[margin=10pt,font=normal,labelfont=bf]{caption}
 \usepackage{empheq}
 \usepackage{hyperref}
 \usepackage{longtable}
@@ -160,10 +160,19 @@ the cost of new T\&D lines. However, the NREL \emph{Initial Technical
   Assessment Report} already covered this step \cite{misty}. In this
 assessment, NREL identified 7 solar and 3 wind sites, based on
 features such as land availability, slope, and resource availability,
-using ArcGIS and in-person site analysis. We chose the top 3 of the
-solar sites and all 3 of the wind sites to use as candidate locations
-for our model. This report focuses on a wide range of strategies, but
-does conclude on the high potential of wind on the Guam grid.
+using ArcGIS and in-person site analysis (See
+Figure~\ref{fig:sites}). We chose the top 3 of the solar sites and all
+3 of the wind sites to use as candidate locations for our model. This
+report focuses on a wide range of strategies, but does conclude on the
+high potential of wind on the Guam grid.
+
+\begin{figure}[!h]
+  \centering
+  \includegraphics[width=0.9\textwidth]{img/sites}
+  \caption{Candiate sites for solar and wind development identified by
+    NREL.}
+  \label{fig:sites}
+\end{figure}
 
 An important source of information for these data sets was Guam Power
 Authority (GPA). The GPA website gave access to a diagram of the
@@ -216,13 +225,16 @@ See Table~\ref{tab:data} for a summary of all data sources.
     located on Guam: Andersen Air Force Base, and Guam Weather
     Forecast Office (located at the Antonio B. Won Pat International
     Airport). Based on proximity, L450-R3 and L177-4-R2 were assumed
-    to match the WFO and L7163 was assumed to match the AFB. [What
-    about Wind?? Should also separately describe how we arrived at our
-    finals numbers (e.g. Solar was from ASHRAE 2009) & Not attached,
+    to match the WFO and L7163 was assumed to match the AFB. Both
+    W3-Cotal and W3-Pulantat were assumed to be an average of WFO and
+    the Naval Base (below). & Not attached,
     available online from NREL RReDC & NREL \cite{nrel05} \\\hline
 
-    \textbf{Wind Resource (Naval Base)}  &  & Navy \cite{nrel09}
-    \\\hline
+    \textbf{Wind Resource (Naval Base)} Taken from a 60m meteorogical
+    tower on a U.S. Naval Base. This resource was used for the site at
+    W2-Navy and used with the TMY3-WFO data for W3-Cotal and
+    W3-Pulantat & Not attached, available online. & Navy
+    \cite{nrel09} \\\hline
 
     \textbf{8760 Load Data} Hourly load from 2011-2013 was
     provided. In order to eliminate abnormalities inherent to each
@@ -230,13 +242,13 @@ See Table~\ref{tab:data} for a summary of all data sources.
     profile was then taken to be a more normal 2012, as the load had
     been steadily decreasing from 2011 to 2013, and 2012 was already
     close to being the average of the other two profiles. & Not
-    attached, available upon request? & GPA \cite{sablan} \\\hline
+    attached, available upon request & GPA \cite{sablan} \\\hline
 
     \textbf{Potential Solar and Wind Locations} Also includes distance
     to transmission for sites (L450-R3, L177-4-R2, L7163, L10140-R5
-    and L10164-R3, L57-2, L0, L186NEW-1). & See Figure with map? 0 ft,
-    370 ft, 1200 ft, 1600 ft, 2500 ft, 850 ft, 300 ft. & NREL
-    \cite{misty} \\\hline
+    and L10164-R3, L57-2, L0, L186NEW-1). & See Figure~\ref{fig:sites}
+    for map; 0 ft, 370 ft, 1200 ft, 1600 ft, 2500 ft, 850 ft, 300 ft. &
+    NREL \cite{misty} \\\hline
 
     \textbf{Existing Generation} Includes existing RFO, Diesel, and
     Solar on Guam. & 353.6 MW, 199.2 MW, 0.10906 MW. & NREL
@@ -284,9 +296,8 @@ See Table~\ref{tab:data} for a summary of all data sources.
     respectively. Chose the EPA Delay forecast scenario, as per the
     GPA's choice of using it in their own IRP. Values beyond 2025 and
     2029 were extrapolated from the last few years of each curve, as
-    each forecast ends with a very linear behavior. [Where to go over
-    the math of the scaling?] & See attached. & GPA \cite{cruz13}
-    \\\hline
+    each forecast ends with a very linear behavior. & See attached. &
+    GPA \cite{cruz13} \\\hline
 
     \textbf{Cost of transmission} Based on the costs from the NCEP for
     a 69 kV double circuit line, as it was the closest option to the
