@@ -73,8 +73,8 @@ from discontinuties due to transmission costs, which are fully
 incurred for a site upon first construction at that site. Other costs
 include capital costs (a function of installed capacity), fixed
 operation \& maintenance (O\&M) costs (a function of cumulative
-installed capacity), and variable O\&M costs (a function of dispatched
-generation. 
+installed capacity), and variable O\&M costs including fuel (a function of dispatched
+generation). 
 
 %\begin{comment}
 \subsection{Mathematical Form}
@@ -162,9 +162,11 @@ assessment, NREL identified 7 solar and 3 wind sites, based on
 features such as land availability, slope, and resource availability,
 using ArcGIS and in-person site analysis (See
 Figure~\ref{fig:sites}). We chose the top 3 of the solar sites and all
-3 of the wind sites to use as candidate locations for our model. This
-report focuses on a wide range of strategies, but does conclude on the
-high potential of wind on the Guam grid.
+3 of the wind sites to use as candidate locations for our model. The top 3 
+solar sites were determined by having the largest space available for 
+generation, as well as lower to no transmission costs, and accessibility
+by road. This report focuses on a wide range of strategies, but does 
+conclude on the high potential of wind on the Guam grid.
 
 \begin{figure}[!h]
   \centering
@@ -177,9 +179,9 @@ high potential of wind on the Guam grid.
 An important source of information for these data sets was Guam Power
 Authority (GPA). The GPA website gave access to a diagram of the
 existing transmission lines, along with one-line diagrams showing the
-electrical structure of the grid. GPA's 2008 IRP gives data on the
+electrical structure of the grid. GPA's 2008 and 2013 IRP give data on the
 relevant features of the existing generation sources (nameplate
-capacity, age, heat rates, operating costs, etc.). Additionally, a
+capacity, age, heat rates, operating costs, etc.) \cite{cruz08, cruz13}. Additionally, a
 contact at GPA, Jennifer Sablan, provided the 2011-2013 hourly load
 data \cite{sablan}.
 
@@ -280,7 +282,7 @@ See Table~\ref{tab:data} for a summary of all data sources.
     \cite{shaalan01} \\\hline
 
     \textbf{Costs for RFO and Diesel Fuel} Increasing fuel costs were
-    taken from a the GPA's 2013 IRP, as their forecasted fuel
+    taken from the GPA's 2013 IRP, as their forecasted fuel
     costs. This overrides the fuel values from Shaalan, and was done
     to get a more accurate cost of fuel on the island (which is
     typically higher). The same assumed heat rates were kept from
@@ -324,14 +326,25 @@ A large amount of preprocessing of the data was required to
 incorporate it into the model. The 2011-2013 load data from GPA was
 averaged in order to create a model baseline year without the
 fluctuations of each individual year. This was then extrapolated from
-2015-2035 based on the load growth prediction from Guam's 2013 IRP
-\cite{cruz13}. 
+2015-2035 based on the load growth prediction from Guam's 2013 IRP, under
+the EPA delay forecast scenario \cite{cruz13}. This scenario accounts for
+one possible military build up scenario in Guam from 2015 to 2019, and
+was the forecast scenario the GPA picked for their IRP analysis, out of a set
+of scenarios provided to them by a third party energy firm \cite{cruz13}.
 
 Solar and wind resource data were extrapolated from the limited
 available TMY3 data and the single meteorological tower from the
 Navy. This involved combining diffuse and direct radiation to
 determine incident radation levels, which could then be converted into
-``sun-hours.'' Anenometer readings were extrapolated to hub heights
+``sun-hours.'' This calculation uses the equations from chapter 14 of the 
+2009 ASHRAE Handbook \cite{ashrae}. This relies on the latitude and longitude 
+from the TMY3 file, as well as the direct normal (DNI) and direct horizontal (DHI) 
+illumination. Through a series of calculations involving the hour angle, solar 
+altitude, solar azimuth, and surface incidence angle, one can find the total
+irradiance on a surface at any given angle. The irradiance on the PV panels was 
+calculated for panels tilted at an angle equal to latitude, and facing due south.
+
+Anenometer readings were extrapolated to hub heights
 using the power law, with a Hellman exponent, $\alpha$, of 0.2:
 \[v_2 = v_1\left(\frac{h_2}{h_1}\right)^\alpha\] 
 These wind speeds could then be used to determine outputs of a GE
@@ -580,7 +593,8 @@ from that expected, and constructed RFO generation at the start of the
 21 year period, then proceeded to only use diesel generation instead
 of RFO. Additionally, especially odd behavior could be seen where the
 model chose to use large amounts of diesel, and then proceeded to
-curtail all renewables for certain portions of each year.
+curtail all renewables for certain portions of each year, as seen in 
+Figure~\ref{fig:budget_100_not_forced}.
 
 \begin{figure}[!h]
   \centering
@@ -590,8 +604,9 @@ curtail all renewables for certain portions of each year.
 \end{figure}
 
 If renewable dispatch is explicitly enforced via constraint, then the
-resulting system has exceeded the RPS by the end of the 21 years,
-upwards of 29.7\%. However, in this case Guam will also spend almost
+resulting system exceedes the RPS by the end of the 21 years,
+upwards of 29.7\% (Figure~\ref{fig:budget_100_forced}). 
+However, in this case Guam will also spend almost
 \$8 billion more than the \$200 M budget case (regardless of whether
 or not that case had renewable dispatch forced).
 
@@ -617,7 +632,7 @@ exactly that of the RPS for that year within 0.2\% of the load.
   \label{fig:budget_300_not_forced}
 \end{figure}
 
-It would appear the chosen \$200 million is not unreasonable an
+It would appear the chosen \$200 million is not an unreasonable 
 assumption, and is also near the minimum of acceptable budget limits,
 before the model begins to behave abnormally by curtailing renewables
 and excessively using peaker plants as baseload
@@ -636,13 +651,16 @@ longitudinal timeframe as well as small timesteps to accurately
 represent the true system. We decided to prioritize the 21-year
 timeframe, which considerably sacrificed in timestep, forcing weeklong
 timesteps. An ideal model would reduce this to hour timesteps, or even
-15 minutes. Our current data set has many of the basic data needed for
+15 minutes. This would allow for better representation of the intermittencies 
+of renewable generation, and would allow for peaker plants to play a proper
+role in generation, rather than being made irrelevant, as was done to diesel
+in this study. Our current data set has many of the basic data needed for
 one hour timesteps, including load and resource data. However, smaller
 timesteps would also require additional data on timely affects such as
 ramp rates of the fossil-based generation. 
 
 Additionally, many heuristics were used to simplify the volume of data
-required for the model. The most glaring such assumption was that the
+required for the model. The most glaring of such assumptions was that the
 resource at each solar and wind site could be approximated by the TMY3
 data at one of two sites, or a simple average combination of the two
 sites. A more accurate study would collect data specific to the
@@ -655,6 +673,22 @@ this transmission were assumed to be linearly related to distance. In
 reality, a more accurate model would depend on features of the land,
 distance, and required capacity to determine local costs.
 
+Having solid cost information became an issue, as much of it came from 
+such a varied array of sources, each with their own assumptions, and almost
+all of which were specific to locations on the U.S. mainland, rather than 
+for on an island. This is particularly important as the higher cost of burning 
+fossil fuels due to the greater difficulty of obtaining them on an island such as
+Guam is part of the basis for this study. Other concerns would be higher 
+construction costs on an island due to greater difficulty with transportation 
+as well. Inputting how these costs change with time is similarly important, as they
+may all change differently. Other cost data, such as tax incentives and more 
+accurate financing of capital investments, would also have helped establish 
+more realistic grounds for comparison between renewables and 
+conventional generation types. Finally, knowing the true GPA budget for
+capital investments would have been better, although the current assumption
+of $200 million seems to hold up well in analysis, and in the context of 
+their total annual budget on the order of $400 million.
+
 One factor that was not included that could have led to more realistic
 results is a measure of construction time. Currently, the model is
 allowed to construct sites in a single timestep (constrained by an
@@ -663,6 +697,16 @@ the very ``chunky'' behavior of the resulting installation schedule,
 as generation can be built as soon as it is needed. In a more
 realistic scenario, some of the capacity may come online gradually as
 solar arrays and wind turbines are erected.
+
+On the other end of construction time would be the inclusion of generation
+retirement. Upon closer investigation of the GPA's own plans for retirement, 
+it seemed the impact would be small as they only intended to retire two 
+diesel combustion turbines, for which they already have excess capacity 
+\cite{cruz13}. However, part of this retirement plan assumed other older
+ plants, namely baseload plants, would be converted to natural gas fired
+versions, or assimilated into a combined cycle system, also using natural gas.
+If these plants were to be retired completely instead, in favor of growing 
+renewable penetration, it would be pertinent to include this in the model.
 
 Another aspect of the model that had to be left out was the potential
 for energy storage. Besides the difficulties of cost assumptions,
@@ -673,6 +717,12 @@ out, leaving little room in the current model for energy storage to
 provide value.
 
 \begin{thebibliography}{99}
+
+\bibitem{ashrae}
+  American Society of Heating, Refrigerating and Air-Conditioning Engineers, Inc. (ASHRAE). 
+  \emph{2009 ASHRAE Handbook - Fundamentals}. 
+  Retrieved March 16, 2014 from
+  \url{http://app.knovel.com/hotlink/toc/id:kpASHRAE22/ashrae-handbook-fundamentals-2}
 
 \bibitem{misty}
   Baring-Gould, I. et al. (April 2011).
