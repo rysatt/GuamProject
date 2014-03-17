@@ -1,3 +1,7 @@
+# Guam Renewable Integration
+# Martin Chang and Ryan Satterlee
+# ENERGY 291 Final Project
+
 # Reset AMPL
 reset;
 reset;
@@ -7,7 +11,9 @@ reset;
 model Project1.mod
 data Project1.dat
 
-table Energy IN "ODBC" "ENERGY_168hr_21yr_6sites_loadgrowth_rand.xlsx":
+# Read in excel data for load and resource avaiability for each renewable site
+# Excel is after preprocessing by Python code, aggregating time steps from hourly to weekly
+table Energy IN "ODBC" "ENERGY_168hr_21yr_6sites_loadgrowth_rand.xlsx": 
         TIME <- [t ~ TIME], 
         	Load, 
         	ResourceAvailability["L450-R3",t] ~ L450_R3, 
@@ -20,15 +26,13 @@ read table Energy;
 
 # Set solver options
 option solver SNOPT;
-#option solver cplex;
 
 # Solve model
 solve;
 
-# Display results
+# Display results, write to file
 #display Installed;
 display Installed > results.txt;
-#display Build;
 #display Dispatch;
 display Dispatch > results.txt;
 display TotalCosts;
