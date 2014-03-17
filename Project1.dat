@@ -1,5 +1,6 @@
 # Guam Renewable Integration
 # Martin Chang and Ryan Satterlee
+# ENERGY 291 Final Project
 
 # ------------------------------------SETS--------------------------------------
 set SITES := Diesel_1 Oil_1 L450-R3 L177-4-R2 L7163 W3-Cotal W3-Pulantat W2-Navy;
@@ -9,23 +10,17 @@ set RENEWABLES := L450-R3 L177-4-R2 L7163 W3-Cotal W3-Pulantat W2-Navy;
 param:	 TransCost 		FixedOMCost  InitialDevelopedResource :=
 L450-R3	 	0	  		31771	     0.109
 L177-4-R2	224198.62	31771	     0
-L7163	 	9999727130.67	31771	     0 #added a 999 to front of trans cost to force model to not build
-W3-Cotal	122504	  	57245	     0 #45281 fixed OM from EIA, 57245 is discounted from GPA IRP
+L7163	 	727130.67	31771	     0 
+W3-Cotal	122504	  	57245	     0 
 W3-Pulantat 122504	  	57245	     0
 W2-Navy		122504	  	57245	     0
 Oil_1		0   		15175	     446
 Diesel_1 	0   		9657	     287.2
-#Solar_1	 590361	  	5124355		31771	     0.109
-#Wind_1	 122504	  	5696450		45281	     0
-#Oil_1	 0   		165541		15175	     446
-#Diesel_1 0   		469035		9657	     287.2
 ;
 
+# Capital costs for each year, allows for declining prices of solar PV to be captured
 param CapitalCost (tr):
 		Diesel_1	Oil_1	L450-R3		L177-4-R2	L7163		W3-Cotal	W3-Pulantat	W2-Navy :=
-#2012	469035		1655419	5230933.61	5230933.61	5230933.61	5696450		5696450		5696450
-#2013	469035		1655419	4830344.549	4830344.549	4830344.549	5696450		5696450		5696450
-#2014	469035		1655419	4554709.874	4554709.874	4554709.874	5696450		5696450		5696450
 2015	469035		1655419	4344002.478	4344002.478	4344002.478	5696450		5696450		5696450
 2016	469035		1655419	4154120.813	4154120.813	4154120.813	5696450		5696450		5696450
 2017	469035		1655419	3980164.707	3980164.707	3980164.707	5696450		5696450		5696450
@@ -84,6 +79,8 @@ W3-Pulantat 10
 W2-Navy		20
 ;
 
+# Slope and intercept of linear trendline for extrapolating variable costs for each site, 
+# as a function of the year. Allows for fuel escalation to be captured.
 param: m b :=
 L450-R3	 	0 0
 L177-4-R2	0 0
@@ -95,8 +92,10 @@ Oil_1	 5.9083 -11775
 Diesel_1 15.165 -30213
 ;
 
+# Annual budget allowed for capital projects, currently ~1/2 of GPA fiscal budget in 2012
 param AnnualBudget := 200000000;
 
+# Discount rate for bringing costs back to 2015$ values
 param DiscountRate := 0.07;
 
 # Hourly Load [MWh]             
@@ -106,13 +105,13 @@ param DiscountRate := 0.07;
 # Coming from excel file read in run script
 
 # -----------------------------DECISION VARIABLES-------------------------------
-
+# No data required
 
 # -----------------------------DEFINED VARIABLES--------------------------------
-
+# No data required
 
 # -----------------------------OBJECTIVE FUNCTION-------------------------------
-
+# No data required
 
 # ---------------------------------CONSTRAINTS----------------------------------
-
+# No data required
