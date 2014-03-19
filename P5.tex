@@ -73,8 +73,8 @@ from discontinuties due to transmission costs, which are fully
 incurred for a site upon first construction at that site. Other costs
 include capital costs (a function of installed capacity), fixed
 operation \& maintenance (O\&M) costs (a function of cumulative
-installed capacity), and variable O\&M costs including fuel (a function of dispatched
-generation). 
+installed capacity), and variable O\&M costs including fuel (a
+function of dispatched generation).
 
 %\begin{comment}
 \subsection{Mathematical Form}
@@ -156,22 +156,24 @@ Our project initially intended to start with a geospatial optimization
 of renewable energy sites based on constraints of rewnewable energy
 sources, costs associated with building and operating these plants,
 and the impact of land features (such as slope, urban areas, etc.) on
-the cost of new T\&D lines. However, the NREL \emph{Initial Technical
-  Assessment Report} already covered this step \cite{misty}. In this
-assessment, NREL identified 7 solar and 3 wind sites, based on
-features such as land availability, slope, and resource availability,
-using ArcGIS and in-person site analysis (See
-Figure~\ref{fig:sites}). We chose the top 3 of the solar sites and all
-3 of the wind sites to use as candidate locations for our model. The top 3 
-solar sites were determined by having the largest space available for 
-generation, as well as lower to no transmission costs, and accessibility
-by road. This report focuses on a wide range of strategies, but does 
-conclude on the high potential of wind on the Guam grid.
+the cost of new T\&D lines, similar to Richard S. Middleton's
+\emph{SimCCS} and \emph{SimWIND} studies \cite{middleton09,
+  phillips12}. However, the NREL \emph{Initial Technical Assessment
+  Report} already covered this step \cite{misty}. In this assessment,
+NREL identified 7 solar and 3 wind sites, based on features such as
+land availability, slope, and resource availability, using ArcGIS and
+in-person site analysis (See Figure~\ref{fig:sites}). We chose the top
+3 of the solar sites and all 3 of the wind sites to use as candidate
+locations for our model. The top 3 solar sites were determined by
+having the largest space available for generation, as well as lower to
+no transmission costs, and accessibility by road. The three wind sites
+were determined by NREL using observational data and site analysis,
+with only one site (W2-Navy) having reliable met tower data.
 
 \begin{figure}[!h]
   \centering
-  \includegraphics[width=0.9\textwidth]{img/sites}
-  \caption{Candiate sites for solar and wind development identified by
+  \includegraphics[width=0.925\textwidth]{img/sites}
+  \caption{Candidate sites for solar and wind development identified by
     NREL.}
   \label{fig:sites}
 \end{figure}
@@ -196,8 +198,8 @@ See Table~\ref{tab:data} for a summary of all data sources.
 
 %\begin{comment}
 \begin{center}
-  \begin{longtable}{| p{10cm} | p{4cm} | c | }
-    \caption{Data Sources}
+  \begin{longtable}{| p{11cm} | p{3cm} | c | }
+    \caption{Summary of Data Sources}
     \label{tab:data}\\
 
     \hline
@@ -326,30 +328,33 @@ A large amount of preprocessing of the data was required to
 incorporate it into the model. The 2011-2013 load data from GPA was
 averaged in order to create a model baseline year without the
 fluctuations of each individual year. This was then extrapolated from
-2015-2035 based on the load growth prediction from Guam's 2013 IRP, under
-the EPA delay forecast scenario \cite{cruz13}. This scenario accounts for
-one possible military build up scenario in Guam from 2015 to 2019, and
-was the forecast scenario the GPA picked for their IRP analysis, out of a set
-of scenarios provided to them by a third party energy firm \cite{cruz13}.
+2015-2035 based on the load growth prediction from Guam's 2013 IRP,
+under the EPA delay forecast scenario \cite{cruz13}. This scenario
+accounts for one possible military build up scenario in Guam from 2015
+to 2019, and was the forecast scenario the GPA picked for their IRP
+analysis, out of a set of scenarios provided to them by a third party
+energy firm \cite{cruz13}.
 
 Solar and wind resource data were extrapolated from the limited
 available TMY3 data and the single meteorological tower from the
 Navy. This involved combining diffuse and direct radiation to
 determine incident radation levels, which could then be converted into
-``sun-hours.'' This calculation uses the equations from chapter 14 of the 
-2009 ASHRAE Handbook \cite{ashrae}. This relies on the latitude and longitude 
-from the TMY3 file, as well as the direct normal (DNI) and direct horizontal (DHI) 
-illumination. Through a series of calculations involving the hour angle, solar 
-altitude, solar azimuth, and surface incidence angle, one can find the total
-irradiance on a surface at any given angle. The irradiance on the PV panels was 
-calculated for panels tilted at an angle equal to latitude, and facing due south.
+``sun-hours.'' This calculation uses the equations from Chapter 14 of
+the 2009 ASHRAE Handbook \cite{ashrae}. This relies on the latitude
+and longitude from the TMY3 file, as well as the direct normal (DNI)
+and direct horizontal (DHI) irradiance. Through a series of
+calculations involving the hour angle, solar altitude, solar azimuth,
+and surface incidence angle, one can find the total irradiance on a
+surface at any given angle. The irradiance on the PV panels was
+calculated for panels tilted at an angle equal to latitude, and facing
+due south.
 
 Anenometer readings were extrapolated to hub heights
 using the power law, with a Hellman exponent, $\alpha$, of 0.2:
 \[v_2 = v_1\left(\frac{h_2}{h_1}\right)^\alpha\] 
 These wind speeds could then be used to determine outputs of a GE
 2.5MW turbine based on its power curve, approximated with a Gaussian
-curve \cite{ge}. Each wind and solar site were designated to be
+curve \cite{ge}. Each wind and solar site was designated to be
 represented by either one of the three measurement sites or an average
 of two, based on its proximity. While more site-specific data would
 obviously be needed before construction at these sites, this serves as
@@ -366,8 +371,8 @@ different sites and years.
 The final end result of the model utilizes the following parameters:
 \begin{itemize}
 \item 8 total sites (1 oil aggregate, 1 diesel aggregate, L450-R3
-  solar, L177-4-R2 solar, L7163 solar, W2 Navy wind, W3 Cotal wind, W3
-  Pulantat wind)
+  solar, L177-4-R2 solar, L7163 solar, W2-Navy wind, W3-Cotal wind,
+  W3-Pulantat wind)
 \item 7\% discounting on costs
 \item +/- 5\% randomness on the resource availability input vectors
   for each renewable site
@@ -385,13 +390,13 @@ constraint was added:
 
 The resulting graph (Figure~\ref{fig:dispatch_base_case}) follows the
 step function of the RPS quite closely, with some exceptions, given
-the budgetary limit on spending. Due to the budget limit, the model
-does at times preempt the RPS goal and build renewables earlier on in
-anticipation of continuing to meet said goals. This is especially
-noticeable in the way that the model surpasses the 10\% limit without
-ever building to it exactly, instead jumping from 8\% to 12\%. Also,
-in most runs, year 2034 plays a role in the model’s final build up to
-25\% renewables for 2035.
+the budgetary limit on spending (See Table~\ref{tab:rps}. Due to the
+budget limit, the model does at times preempt the RPS goal and build
+renewables earlier on in anticipation of continuing to meet said
+goals. This is especially noticeable in the way that the model
+surpasses the 10\% limit without ever building to it exactly, instead
+jumping from 8\% to 12\%. Also, in most runs, year 2034 plays a role
+in the model’s final build up to 25\% renewables for 2035.
 
 %\begin{comment}
 \begin{table}[!h]
@@ -452,6 +457,13 @@ chooses to build the more expensive L7163 site first.
 
 \begin{figure}[!h]
   \centering
+  \includegraphics[width=0.9\textwidth]{img/dispatch_base_case}
+  \caption{Weekly dispatch of \$200 M budget base case.}
+  \label{fig:dispatch_base_case}
+\end{figure}
+
+\begin{figure}[!h]
+  \centering
   \includegraphics[width=0.9\textwidth]{img/installed}
   \caption{Installed capacity per week of \$200 M budget base case.}
   \label{fig:installed}
@@ -491,13 +503,6 @@ the problem, with a fixed budget each year with decreasing PV costs,
 discourages a gradual build up on sites before constructing the next
 one. More details regarding the sensitivity of the model to the annual
 budget set is available in the following section.
-
-\begin{figure}[!h]
-  \centering
-  \includegraphics[width=0.9\textwidth]{img/dispatch_base_case}
-  \caption{Weekly dispatch of \$200 M budget base case.}
-  \label{fig:dispatch_base_case}
-\end{figure}
 
 From this run, a final objective value of \$11,564,900,000 was
 obtained. This totals to around \$550,709,524 per year, which is not
@@ -545,24 +550,25 @@ budget to construct solar at L7163 in 2019, prior to the 2020 RPS
 increase. Both the W3-Cotal and W3-Pulantat sites are fully utilized
 in terms of allowable installed capacity very early on. W2-Navy is
 only constructed later to make the final push to 25\% in 2035. In
-comparison, with the more expensive GPA wind cost data, the model
-never builds wind at W2-Navy, and makes up for that difference in with
-the now comparatively cheaper solar PV at L177-4-R2. It is worth
-noting both models still start with maximizing the two W3 wind sites,
-but this may not necessarily be a cost matter directly, but rather
-because of having perfect foresight about future requirements, and the
-differences in wind and solar resource availability.
+comparison, with the more expensive GPA wind cost data
+(Figure~\ref{fig:cost_gpa}), the model never builds wind at W2-Navy,
+and makes up for that difference with the now comparatively cheaper
+solar PV at L177-4-R2. It is worth noting both models still start with
+maximizing the two W3 wind sites, but this may not necessarily be a
+cost matter directly. Rather, it is due to having perfect foresight
+about future requirements, and the differences in wind and solar
+resource availability.
 
 Interestingly, with the more expensive wind set up, the total cost
 across all 21 years is lower than that of the cheaper EIA wind data,
 seeing \$11,979,200,000 instead of \$12,033,000,000. The difference is
 relatively small, but since the difference is due to using more solar
-at a site that will be constructed either way, and foregoing the
-one-time transmission construction cost for the W2-Navy site, the data
-suggests the current final objective function value from the EIA data
-is not the global minimum. The EIA case should be able to reach the
-same end values as the GPA case, and have an even lower final
-objective value, since the only difference is the EIA case having even
+at a site that will be constructed in either case, and from foregoing
+the one-time transmission construction cost for the W2-Navy site, the
+data suggests the current final objective function value from the EIA
+data is not the global minimum. The EIA case should be able to reach
+the same end values as the GPA case, and have an even lower final
+objective value, since the only difference is the EIA case having
 cheaper wind cost data.
 
 \begin{figure}[!h]
@@ -583,8 +589,8 @@ Another large assumption in the model was setting an annual
 budget. The initial simplified model allowed for unlimited expenses to
 meet the demand and RPS simultaneously. However, in order to push for
 more realism, an annual budget constraint was added, as previously
-mentioned. This budget, while seemingly realistic as being half of the
-fiscal year budget for the GPA in 2012, is not necessarily the best
+mentioned. This budget, which was chosen as being half of the fiscal
+year budget for the GPA in 2012, is not necessarily the best
 assumption. The sensitivity of the model to this value was
 tested. When set to both \$100 million and \$150 million annually, the
 optimal solution was not reached, and instead the nonlinear
@@ -593,7 +599,7 @@ from that expected, and constructed RFO generation at the start of the
 21 year period, then proceeded to only use diesel generation instead
 of RFO. Additionally, especially odd behavior could be seen where the
 model chose to use large amounts of diesel, and then proceeded to
-curtail all renewables for certain portions of each year, as seen in 
+curtail all renewables for certain portions of each year, as seen in
 Figure~\ref{fig:budget_100_not_forced}.
 
 \begin{figure}[!h]
@@ -608,7 +614,9 @@ resulting system exceedes the RPS by the end of the 21 years,
 upwards of 29.7\% (Figure~\ref{fig:budget_100_forced}). 
 However, in this case Guam will also spend almost
 \$8 billion more than the \$200 M budget case (regardless of whether
-or not that case had renewable dispatch forced).
+or not that case had renewable dispatch forced), and the model again
+chose to run diesel over oil, despite the more expensive operating
+costs of diesel.
 
 \begin{figure}[!h]
   \centering
@@ -622,8 +630,10 @@ On the other end of the spectrum, the higher the budget from the \$200
 million, the closer the model performs to the original unlimited
 budget case, as expected. With an increase to \$300 million annually,
 the model already performs close to the unlimited form, with a
-dispatch plot very closely matching the RPS. In fact, each year is
-exactly that of the RPS for that year within 0.2\% of the load.
+dispatch plot very closely matching the RPS
+(Figure~\ref{fig:budget_300_not_forced}). In fact, the portion of
+dispatch from renewables each year is exactly that of the RPS for that
+year within 0.2\% of the load.
 
 \begin{figure}[!h]
   \centering
@@ -646,17 +656,17 @@ run has a total cost of \$11,565 million.
 As was expected at the onset of the project, the sheer amount of data
 was the primary barrier in determining an optimal model that would
 feasibly solve in a reasonable amount of time. Integration of
-renewables under and RPS is a problem that requires both a large
+renewables under an RPS is a problem that requires both a large
 longitudinal timeframe as well as small timesteps to accurately
 represent the true system. We decided to prioritize the 21-year
 timeframe, which considerably sacrificed in timestep, forcing weeklong
 timesteps. An ideal model would reduce this to hour timesteps, or even
 15 minutes. This would allow for better representation of the intermittencies 
 of renewable generation, and would allow for peaker plants to play a proper
-role in generation, rather than being made irrelevant, as was done to diesel
+role in generation, rather than being made irrelevant as was done to diesel
 in this study. Our current data set has many of the basic data needed for
 one hour timesteps, including load and resource data. However, smaller
-timesteps would also require additional data on timely affects such as
+timesteps would also require additional data on timely effects such as
 ramp rates of the fossil-based generation. 
 
 Additionally, many heuristics were used to simplify the volume of data
@@ -671,23 +681,26 @@ which are incomplete. For example, NREL determined the distances to
 transmission lines for each candidate site, but costs for installing
 this transmission were assumed to be linearly related to distance. In
 reality, a more accurate model would depend on features of the land,
-distance, and required capacity to determine local costs.
+distance, and required capacity to determine local costs, as was done
+in the \emph{SimWIND} study \cite{phillips12}. 
 
-Having solid cost information became an issue, as much of it came from 
-such a varied array of sources, each with their own assumptions, and almost
-all of which were specific to locations on the U.S. mainland, rather than 
-for on an island. This is particularly important as the higher cost of burning 
-fossil fuels due to the greater difficulty of obtaining them on an island such as
-Guam is part of the basis for this study. Other concerns would be higher 
-construction costs on an island due to greater difficulty with transportation 
-as well. Inputting how these costs change with time is similarly important, as they
-may all change differently. Other cost data, such as tax incentives and more 
-accurate financing of capital investments, would also have helped establish 
-more realistic grounds for comparison between renewables and 
-conventional generation types. Finally, knowing the true GPA budget for
-capital investments would have been better, although the current assumption
-of $200 million seems to hold up well in analysis, and in the context of 
-their total annual budget on the order of $400 million.
+Having solid cost information became an issue, as much of it came from
+such a varied array of sources, each with their own assumptions, and
+almost all of which were specific to locations on the
+U.S. mainland. This is particularly important as the higher cost of
+burning fossil fuels due to the greater difficulty of obtaining them
+on an island such as Guam is part of the basis for this study. Other
+concerns would be higher construction costs on an island due to
+greater difficulty with transportation as well. Inputting how these
+costs change with time is similarly important, as they may all change
+differently. Other cost data, such as tax incentives and more accurate
+financing of capital investments, would also have helped establish
+more realistic grounds for comparison between renewables and
+conventional generation types. Finally, knowing the true GPA budget
+for capital investments would have been better, although the current
+assumption of \$200 million seems to hold up well in analysis, and in
+the context of their total annual budget on the order of \$400
+million.
 
 One factor that was not included that could have led to more realistic
 results is a measure of construction time. Currently, the model is
@@ -698,15 +711,18 @@ as generation can be built as soon as it is needed. In a more
 realistic scenario, some of the capacity may come online gradually as
 solar arrays and wind turbines are erected.
 
-On the other end of construction time would be the inclusion of generation
-retirement. Upon closer investigation of the GPA's own plans for retirement, 
-it seemed the impact would be small as they only intended to retire two 
-diesel combustion turbines, for which they already have excess capacity 
-\cite{cruz13}. However, part of this retirement plan assumed other older
- plants, namely baseload plants, would be converted to natural gas fired
-versions, or assimilated into a combined cycle system, also using natural gas.
-If these plants were to be retired completely instead, in favor of growing 
-renewable penetration, it would be pertinent to include this in the model.
+In addition to construction contraints on timeslines, generation
+lifetimes and retirements need to be accounted for. On the other end
+of construction time would be the inclusion of generation
+retirement. Upon closer investigation of the GPA's own plans for
+retirement, it seemed the impact would be small as they only intended
+to retire two diesel combustion turbines, for which they already have
+excess capacity \cite{cruz13}. However, part of this retirement plan
+assumed other older plants, namely baseload plants, would be converted
+to natural gas fired versions, or assimilated into a combined cycle
+system, also using natural gas.  If these plants were to be retired
+completely instead, in favor of growing renewable penetration, it
+would be pertinent to include this in the model.
 
 Another aspect of the model that had to be left out was the potential
 for energy storage. Besides the difficulties of cost assumptions,
@@ -786,6 +802,13 @@ provide value.
   Retrieved from 
   \url{http://guampowerauthority.com/gpa_authority/engineering/documents/IslandwidePlantsandTransmission.pdf}
 
+\bibitem{middleton09}
+  Middleton, Richard S. and Jeffery M. Bielicki.
+  \emph{A scalable infrastructure model for carbon capture and
+    storage: SimCCS}.
+  Energy Policy 37.
+  1052-1060.
+
 \bibitem{nrel05}
   National Renewable Energy Laboratory (2005)
   \emph{National Solar Radiation Data Base}.
@@ -797,6 +820,13 @@ provide value.
   \emph{Wind Resource Data Summary, Guam Naval Ordianance Annex}.
   Retrieved from
   \url{http://guampowerauthority.com/special/documents/GuamNavalOrdnanceAnnex-200911Summary.pdf}
+
+\bibitem{phillips12}
+  Phillips, Benjamin R. and Richard S. Middleton.
+  \emph{SimWIND: A geospatial infrastructure model for optimizing wind
+    power generation and transmission}.
+  Energy Policy 43.
+  291-302.
 
 \bibitem{sablan}
   Sablan, Jennifer (Mar 2014).
@@ -834,5 +864,7 @@ provide value.
   \url{http://www.eia.gov/forecasts/capitalcost/pdf/updated_capcost.pdf}
 
 \end{thebibliography}
+
+\includepdf[pages=-]{P5_Report_Appendix.pdf}
 
 \end{document}
