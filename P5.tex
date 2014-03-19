@@ -15,6 +15,9 @@
 \newcommand{\dC}{^{o}C}
 \newcommand{\HRule}{\noindent\rule{\linewidth}{0.5mm}}
 
+\newcommand{\spc}[2][l]{%
+  \begin{tabular}[#1]{@{}l@{}}#2\end{tabular}}
+
 \setlength{\parindent}{0in} % No indentation
 \setlength{\parskip}{0.5cm}
 \setlength{\tabcolsep}{4pt} % Tight table
@@ -231,57 +234,74 @@ See Table~\ref{tab:data} for a summary of all data sources.
     Airport). Based on proximity, L450-R3 and L177-4-R2 were assumed
     to match the WFO and L7163 was assumed to match the AFB. Both
     W3-Cotal and W3-Pulantat were assumed to be an average of WFO and
-    the Naval Base (below). & Not attached,
-    available online from NREL RReDC & NREL \cite{nrel05} \\\hline
+    the Naval Base (below). 
+    & Not attached, available online from NREL RReDC 
+    & NREL \cite{nrel05} 
+    \\\hline
 
     \textbf{Wind Resource (Naval Base)} Taken from a 60m meteorogical
     tower on a U.S. Naval Base. This resource was used for the site at
     W2-Navy and used with the TMY3-WFO data for W3-Cotal and
-    W3-Pulantat & Not attached, available online. & Navy
-    \cite{nrel09} \\\hline
+    W3-Pulantat 
+    & Not attached, available online. 
+    & Navy \cite{nrel09} 
+    \\\hline
 
     \textbf{8760 Load Data} Hourly load from 2011-2013 was
     provided. In order to eliminate abnormalities inherent to each
     year, all three years were averaged into a single profile. This
     profile was then taken to be a more normal 2012, as the load had
     been steadily decreasing from 2011 to 2013, and 2012 was already
-    close to being the average of the other two profiles. & Not
-    attached, available upon request & GPA \cite{sablan} \\\hline
+    close to being the average of the other two profiles. 
+    & Not attached, available upon request 
+    & GPA \cite{sablan} 
+    \\\hline
 
     \textbf{Potential Solar and Wind Locations} Also includes distance
     to transmission for sites (L450-R3, L177-4-R2, L7163, L10140-R5
-    and L10164-R3, L57-2, L0, L186NEW-1). & See Figure~\ref{fig:sites}
-    for map; 0 ft, 370 ft, 1200 ft, 1600 ft, 2500 ft, 850 ft, 300 ft. &
-    NREL \cite{misty} \\\hline
+    and L10164-R3, L57-2, L0, L186NEW-1). 
+    & \spc{See Figure~\ref{fig:sites};\\0 ft,\\370 ft,\\1200 ft,\\1600
+    ft,\\2500 ft,\\850 ft,\\300 ft.}
+    & NREL \cite{misty} 
+    \\\hline
 
     \textbf{Existing Generation} Includes existing RFO, Diesel, and
-    Solar on Guam. & 353.6 MW, 199.2 MW, 0.10906 MW. & NREL
-    \cite{misty} \\\hline
+    Solar on Guam. 
+    & \spc{353.6 MW,\\199.2 MW,\\0.10906 MW}
+    & NREL \cite{misty} 
+    \\\hline
 
     \textbf{Maximum Allowable Generation} Includes solar sites
     (L450-R3, L177-4-R2, L7163, L10140-R5 and L10164-R3, L57-2, L0,
-    L186NEW-1) and Wind (W3-Cotal, W3-Pulantat, W2-Navy). & 168.75 MW,
-    160.8 MW, 62.4 MW, 28.65 MW, 25.35 MW, 16.65 MW, 10.8 MW, 20 MW,
-    10 MW, 20 MW. & NREL \cite{misty} \\\hline
+    L186NEW-1) and Wind (W3-Cotal, W3-Pulantat, W2-Navy). 
+    & \spc{168.75 MW,\\160.8 MW,\\62.4 MW,\\28.65 MW,\\25.35
+      MW,\\16.65 MW,\\10.8 MW,\\20 MW,\\10 MW,\\20 MW.}
+    & NREL \cite{misty} 
+    \\\hline
 
     \textbf{Costs for Solar} Includes capital, fixed and variable
-    O\&M, and fuel. For a 20MW Utility PV facility, fixed tilt. &
-    \$4,183/kW, \$27.75/kW-yr, \$0/kWh, \$0/kWh [2013\$] & EIA
-    \cite{eia13} \\\hline
+    O\&M, and fuel. For a 20MW Utility PV facility, fixed tilt. 
+    & \spc{\$4,183/kW,\\\$27.75/kW-yr,\\\$0/kWh,\\\$0/kWh\\(2013\$)}
+    & EIA \cite{eia13} 
+    \\\hline
 
     \textbf{Costs for Wind} Includes capital, fixed and variable O\&M,
-    and fuel. For a 100 MW wind farm. & \$2,213/kW, \$39.55/kW-yr,
-    \$0/kWh, \$0/kWh [2013\$] & EIA \cite{eia13} \\\hline
+    and fuel. For a 100 MW wind farm. 
+    & \spc{\$2,213/kW,\\\$39.55/kW-yr,\\\$0/kWh,\\\$0/kWh\\(2013\$)}
+    & EIA \cite{eia13} 
+    \\\hline
 
     \textbf{Costs for RFO} Includes capital, fixed and variable O\&M,
-    and fuel. For an oil fired steam turbine (not combined cycle). &
-    \$600/kW, \$5.5/kW-yr, \$0.0013/kWh, \$0.04693/kWh [2000\$] &
-    Shaalan \cite{shaalan01} \\\hline
+    and fuel. For an oil fired steam turbine (not combined cycle). 
+    & \spc{\$600/kW,\\\$5.5/kW-yr,\\\$0.0013/kWh,\\\$0.04693/kWh\\(2000\$)}
+    & Shaalan \cite{shaalan01} 
+    \\\hline
 
     \textbf{Costs for Diesel} Includes capital, fixed and variable
-    O\&M, and fuel. For an oil fired combustion turbine. & \$170/kW,
-    \$3.5/kW-yr, \$0.005/kWh, \$0.06865/kWh [2000\$] & Shaalan
-    \cite{shaalan01} \\\hline
+    O\&M, and fuel. For an oil fired combustion turbine. 
+    & \spc{\$170/kW,\\\$3.5/kW-yr,\\\$0.005/kWh,\\\$0.06865/kWh\\(2000\$)}
+    & Shaalan \cite{shaalan01} 
+    \\\hline
 
     \textbf{Costs for RFO and Diesel Fuel} Increasing fuel costs were
     taken from the GPA's 2013 IRP, as their forecasted fuel
@@ -293,15 +313,20 @@ See Table~\ref{tab:data} for a summary of all data sources.
     2035. It was assumed Guam could continue to use high sulfur fuel
     oil for RFO. The resulting variable O\&M costs were then fitted
     with a linear trendline the equation for which was directly coded
-    into AMPL. & See attached. & GPA \cite{cruz13} \\\hline
+    into AMPL. 
+    & See attached. 
+    & GPA \cite{cruz13} 
+    \\\hline
 
     \textbf{Load Scaling Factors} Used the predicted load values of
     sales in MWh and peak demand in MW from 2012-2029 and 2012-2025
     respectively. Chose the EPA Delay forecast scenario, as per the
     GPA's choice of using it in their own IRP. Values beyond 2025 and
     2029 were extrapolated from the last few years of each curve, as
-    each forecast ends with a very linear behavior. & See attached. &
-    GPA \cite{cruz13} \\\hline
+    each forecast ends with a very linear behavior. 
+    & See attached. 
+    & GPA \cite{cruz13} 
+    \\\hline
 
     \textbf{Cost of transmission} Based on the costs from the NCEP for
     a 69 kV double circuit line, as it was the closest option to the
@@ -311,15 +336,20 @@ See Table~\ref{tab:data} for a summary of all data sources.
     for added flexibility. A 4x factor from the NCEP was used in
     increasing the cost for underground transmission lines. This was
     done based on the recent initiative by the GPA to switch their
-    T\&D underground for added resiliency and reliability. &
-    \$287.87/ft [\$2004] & NCEP \cite{brown04} \\\hline
+    T\&D underground for added resiliency and reliability. 
+    & \$287.87/ft (\$2004)
+    & NCEP \cite{brown04} 
+    \\\hline
 
     \textbf{Solar Capital Costs} An assumption was made that PV
     overnight capital costs would continue to decrease over time,
     even without accounting for discounting. A Northwest Power and
     Conservation Council presentation from 2013 gives a project cost
-    estimate for a 20 MW solar PV system from 2012-2035.  & See
-    attached. & NW Council \cite{simmons13} \\\hline
+    estimate for a 20 MW solar PV system from 2012-2035.  
+    & See attached. 
+    & NW Council \cite{simmons13} 
+    \\\hline
+
   \end{longtable}
 \end{center}
 %\end{comment}
