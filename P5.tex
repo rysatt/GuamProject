@@ -165,11 +165,11 @@ the cost of new T\&D lines, similar to Richard S. Middleton's
   Report} already covered this step \cite{misty}. In this assessment,
 NREL identified 7 solar and 3 wind sites, based on features such as
 land availability, slope, and resource availability, using ArcGIS and
-in-person site analysis (See Figure~\ref{fig:sites}). We chose the top
-3 of the solar sites and all 3 of the wind sites to use as candidate
+in-person site analysis (See Figure~\ref{fig:sites}). The top
+3 solar sites and all 3 of the wind sites were used as candidate
 locations for our model. The top 3 solar sites were determined by
-having the largest space available for generation, as well as lower to
-no transmission costs, and accessibility by road. The three wind sites
+having the largest space available for generation, as well as lower-to-no 
+transmission costs, and close accessibility by road. The three wind sites
 were determined by NREL using observational data and site analysis,
 with only one site (W2-Navy) having reliable met tower data.
 
@@ -181,21 +181,20 @@ with only one site (W2-Navy) having reliable met tower data.
   \label{fig:sites}
 \end{figure}
 
-An important source of information for these data sets was Guam Power
-Authority (GPA). The GPA website gave access to a diagram of the
+NREL provided access to two stations of TMY3 data that were used for
+solar and wind resource mapping, although extrapolating radiation and
+wind speed data from just two points is a source of innacuracy. An
+additional 60m meteorological tower has been used for Naval wind
+studies, providing a third, more accurate, assessment of wind resource
+\cite{nrel09}. 
+
+An important source of information for these data sets was the GPA. The GPA website gave access to a diagram of the
 existing transmission lines, along with one-line diagrams showing the
 electrical structure of the grid. GPA's 2008 and 2013 IRP give data on the
 relevant features of the existing generation sources (nameplate
 capacity, age, heat rates, operating costs, etc.) \cite{cruz08, cruz13}. Additionally, a
 contact at GPA, Jennifer Sablan, provided the 2011-2013 hourly load
 data \cite{sablan}.
-
-NREL provides access to two stations of TMY3 data that were used for
-solar and wind resource mapping, although extrapolating radiation and
-wind speed data from just two points is a source of innacuracy. An
-additional 60m meteorological tower has been used for Naval wind
-studies, providing a third, more accurate, assessment of wind resource
-\cite{nrel09}. 
 
 See Table~\ref{tab:data} for a summary of all data sources.
 
@@ -366,8 +365,8 @@ analysis, out of a set of scenarios provided to them by a third party
 energy firm \cite{cruz13}.
 
 Solar and wind resource data were extrapolated from the limited
-available TMY3 data and the single meteorological tower from the
-Navy. This involved combining diffuse and direct radiation to
+TMY3 data that was available and the single meteorological tower from the
+Navy. For solar resource availability, this involved combining diffuse and direct radiation to
 determine incident radation levels, which could then be converted into
 ``sun-hours.'' This calculation uses the equations from Chapter 14 of
 the 2009 ASHRAE Handbook \cite{ashrae}. This relies on the latitude
@@ -420,13 +419,13 @@ constraint was added:
 
 The resulting graph (Figure~\ref{fig:dispatch_base_case}) follows the
 step function of the RPS quite closely, with some exceptions, given
-the budgetary limit on spending (See Table~\ref{tab:rps}. Due to the
+the budgetary limit on spending (See Table~\ref{tab:rps}). Due to the
 budget limit, the model does at times preempt the RPS goal and build
 renewables earlier on in anticipation of continuing to meet said
 goals. This is especially noticeable in the way that the model
 surpasses the 10\% limit without ever building to it exactly, instead
 jumping from 8\% to 12\%. Also, in most runs, year 2034 plays a role
-in the model’s final build up to 25\% renewables for 2035.
+in the model's final build up to 25\% renewables for 2035.
 
 %\begin{comment}
 \begin{table}[!h]
@@ -501,7 +500,7 @@ chooses to build the more expensive L7163 site first.
 
 In previous runs, the model would favor building the W2-Navy wind site
 in the final year, as part of the large push to 25\%. However, the
-dropping PV prices and higher wind costs per GPA’s IRP have moved the
+dropping PV prices and higher wind costs per GPA's IRP have moved the
 optimal solution to building more of the solar at existing sites,
 rather than construct a new transmission line and fill in a new wind
 resource site. 
@@ -729,7 +728,7 @@ more realistic grounds for comparison between renewables and
 conventional generation types. Finally, knowing the true GPA budget
 for capital investments would have been better, although the current
 assumption of \$200 million seems to hold up well in analysis, and in
-the context of their total annual budget on the order of \$400
+the context of their total annual budget being on the order of \$400
 million.
 
 One factor that was not included that could have led to more realistic
@@ -742,9 +741,8 @@ realistic scenario, some of the capacity may come online gradually as
 solar arrays and wind turbines are erected.
 
 In addition to construction contraints on timeslines, generation
-lifetimes and retirements need to be accounted for. On the other end
-of construction time would be the inclusion of generation
-retirement. Upon closer investigation of the GPA's own plans for
+lifetimes and retirements need to be accounted for. 
+Upon closer investigation of the GPA's own plans for
 retirement, it seemed the impact would be small as they only intended
 to retire two diesel combustion turbines, for which they already have
 excess capacity \cite{cruz13}. However, part of this retirement plan
@@ -760,7 +758,9 @@ storage was also made nearly impossible to integrate with the need for
 large timesteps. With solar and wind resource data aggregated over
 weeklong timesteps and multiple sites, any intermittancy is smoothed
 out, leaving little room in the current model for energy storage to
-provide value.
+provide value. Addressing the above points would serve to improve the 
+model beyond it's current limitations, and create a more useful tool for 
+Guam's resource planning in terms of accommodating more renewabls.
 
 \begin{thebibliography}{99}
 
